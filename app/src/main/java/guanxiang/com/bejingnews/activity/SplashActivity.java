@@ -1,6 +1,7 @@
-package guanxiang.com.bejingnews;
+package guanxiang.com.bejingnews.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -10,9 +11,15 @@ import android.view.animation.ScaleAnimation;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import guanxiang.com.bejingnews.R;
+import guanxiang.com.bejingnews.utils.CacheUtils;
+
 public class SplashActivity extends Activity {
 
-
+    /**
+     * 静态常量
+     */
+    public static final String START_MAIN = "start_main";
     private RelativeLayout rl_splash_root;
 
     @Override
@@ -66,6 +73,17 @@ public class SplashActivity extends Activity {
         @Override
         public void onAnimationEnd(Animation animation) {
             Toast.makeText(SplashActivity.this,"动画播放完成了",Toast.LENGTH_SHORT).show();
+            //判断是否进入过主页面
+            boolean isStartMain = CacheUtils.getBoolean(SplashActivity.this, START_MAIN);
+            if(isStartMain){
+
+
+            }else{
+                Intent intent= new Intent(SplashActivity.this,GuideActivity.class);
+                startActivity(intent);
+            }
+
+            finish();
         }
 
         @Override
