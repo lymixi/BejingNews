@@ -36,22 +36,22 @@ public class SplashActivity extends Activity {
         rl_splash_root = findViewById(R.id.rl_splash_root);
 
         //渐变动画,缩放动画,旋转动画
-        AlphaAnimation aa = new AlphaAnimation(0,1);
+        AlphaAnimation aa = new AlphaAnimation(0, 1);
 //        aa.setDuration(500);
         aa.setFillAfter(true);
 
-        ScaleAnimation sa = new ScaleAnimation(0,1,0,1,
-                ScaleAnimation.RELATIVE_TO_SELF,0.5f,ScaleAnimation.RELATIVE_TO_SELF,0.5f);
+        ScaleAnimation sa = new ScaleAnimation(0, 1, 0, 1,
+                ScaleAnimation.RELATIVE_TO_SELF, 0.5f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
 
 //        sa.setDuration(500);
         sa.setFillAfter(true);
 
-        RotateAnimation ra = new RotateAnimation(0,360,
-                RotateAnimation.RELATIVE_TO_SELF,0.5f,RotateAnimation.RELATIVE_TO_SELF,0.5f);
+        RotateAnimation ra = new RotateAnimation(0, 360,
+                RotateAnimation.RELATIVE_TO_SELF, 0.5f, RotateAnimation.RELATIVE_TO_SELF, 0.5f);
 //        ra.setDuration(500);
         ra.setFillAfter(true);
 
-        AnimationSet animationSet =new AnimationSet(false);
+        AnimationSet animationSet = new AnimationSet(false);
         //添加三个动画没有先后顺序,便于同时播放电话
         animationSet.addAnimation(aa);
         animationSet.addAnimation(sa);
@@ -72,17 +72,18 @@ public class SplashActivity extends Activity {
 
         @Override
         public void onAnimationEnd(Animation animation) {
-            Toast.makeText(SplashActivity.this,"动画播放完成了",Toast.LENGTH_SHORT).show();
+            Toast.makeText(SplashActivity.this, "动画播放完成了", Toast.LENGTH_SHORT).show();
             //判断是否进入过主页面
             boolean isStartMain = CacheUtils.getBoolean(SplashActivity.this, START_MAIN);
-            if(isStartMain){
+            Intent intent;
+            if (isStartMain) {
+                intent = new Intent(SplashActivity.this, MainActivity.class);
 
 
-            }else{
-                Intent intent= new Intent(SplashActivity.this,GuideActivity.class);
-                startActivity(intent);
+            } else {
+                intent = new Intent(SplashActivity.this, GuideActivity.class);
             }
-
+            startActivity(intent);
             finish();
         }
 

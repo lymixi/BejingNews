@@ -1,6 +1,7 @@
 package guanxiang.com.bejingnews.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,10 +13,13 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 
 import guanxiang.com.bejingnews.R;
+import guanxiang.com.bejingnews.utils.CacheUtils;
+import guanxiang.com.bejingnews.utils.DensityUtil;
 
 public class GuideActivity extends Activity implements View.OnClickListener {
     private ViewPager viewpager;
@@ -25,6 +29,8 @@ public class GuideActivity extends Activity implements View.OnClickListener {
     private ArrayList<ImageView> imageViews;
     private ImageView iv_red_point;
     private int leftmax;
+
+    private int widthdpi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +71,11 @@ public class GuideActivity extends Activity implements View.OnClickListener {
             ImageView point = new ImageView(this);
             point.setBackgroundResource(R.drawable.point_normal);
 
+            widthdpi = DensityUtil.dip2px(this,10);
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(10,10);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(widthdpi,widthdpi);
            if(i != 0){
-               params.leftMargin=10;
+               params.leftMargin=widthdpi;
            }
             point.setLayoutParams(params);
 
@@ -82,17 +89,46 @@ public class GuideActivity extends Activity implements View.OnClickListener {
         iv_red_point.getViewTreeObserver().addOnGlobalLayoutListener(new MyOnGlobalLayoutListene());
 
         viewpager.addOnPageChangeListener(new MyOnPageChangeListener());
+
+        //设置按钮的点击事件
+        btn_start_main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //1.保存曾经进入过主页面
+                CacheUtils.putBoolean(GuideActivity.this,SplashActivity.START_MAIN,true);
+                //2.跳转到主页面
+                Intent itent = new Intent(GuideActivity.this,MainActivity.class);
+                startActivity(itent);
+                //3.关闭引导页面
+                finish();
+            }
+        });
     }
 
     class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
 
         @Override
         public void onPageScrolled(int position, float positionoffset, int positionoffsetpixels) {
+            //两点间移动的距离=屏幕滑动百分比*间距
+            int leftmargin = (int)(position*leftmax+(positionoffset*leftmax));
+            //两点间滑动距离对应的坐标 = 原来的起始位置+两点移动距离
+
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) iv_red_point.getLayoutParams();
+            params.leftMargin  = leftmargin;
+            iv_red_point.setLayoutParams(params);
+            //params.leftMargin = 两点间滑动距离对应的坐标
 
         }
 
         @Override
-        public void onPageSelected(int i) {
+        public void onPageSelected(int position) {
+            if(position == imageViews.size()-1){
+                //最后一个页面
+                btn_start_main.setVisibility(View.VISIBLE);
+            }else{
+                btn_start_main.setVisibility(View.GONE);
+            }
+
 
         }
 

@@ -21,4 +21,9 @@ public class CacheUtils {
         SharedPreferences sp = context.getSharedPreferences("guanxiang",Context.MODE_PRIVATE);
         return sp.getBoolean(key,false);
     }
+
+    public static void putBoolean(Context context, String key , boolean value) {
+       SharedPreferences sp =  context.getSharedPreferences("guanxiang",Context.MODE_PRIVATE);
+        sp.edit().putBoolean(key,value).commit();
+    }
 }
