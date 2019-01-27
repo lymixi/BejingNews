@@ -31,6 +31,6 @@ public class LeftmenuFragment extends BaseFragment{
     public void initData() {
         super.initData();
         LogUtil.e("加载数据初始化啦");
-        textView.setText("我是左侧菜单");
+        textView.setText("我是左侧菜单页面");
     }
 }

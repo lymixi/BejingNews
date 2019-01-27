@@ -30,6 +30,6 @@ public class ContentFragment extends BaseFragment {
     public void initData() {
         super.initData();
         LogUtil.e("正文Fragment数据初始化啦");
-        textView.setText("我是左侧菜单");
+        textView.setText("我是正文内容页面");
     }
 }
